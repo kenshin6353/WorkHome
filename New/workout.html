@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workouts - WorkHome</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+        .card-shadow { box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        .workout-card:active { transform: scale(0.98); }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen pb-24">
+    <!-- iOS Status Bar -->
+    <div class="bg-white">
+        <div class="max-w-md mx-auto h-11 flex items-center justify-between px-6 text-gray-800 text-sm font-medium">
+            <span>9:41</span>
+            <div class="flex items-center space-x-1">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <div class="bg-white shadow-sm">
+        <div class="max-w-md mx-auto px-6 py-4">
+            <h1 class="text-2xl font-bold text-gray-800">Home Workouts</h1>
+            <p class="text-sm text-gray-500">No equipment needed</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-md mx-auto px-6 py-4 space-y-4">
+        <!-- Upper Body -->
+        <div class="workout-card bg-white rounded-2xl card-shadow overflow-hidden transition-transform" onclick="selectWorkout('upper')">
+            <div class="flex items-center p-4">
+                <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mr-4">
+                    <i class="fas fa-hand-fist text-white text-2xl"></i>
+                </div>
+                <div class="flex-1">
+                    <h3 class="font-bold text-gray-800 text-lg">Upper Body</h3>
+                    <p class="text-sm text-gray-500">Chest, Arms, Shoulders</p>
+                    <div class="flex items-center mt-1 text-xs text-gray-400">
+                        <span class="mr-3"><i class="fas fa-clock mr-1"></i>25 min</span>
+                        <span><i class="fas fa-fire mr-1"></i>180 cal</span>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-right text-gray-400"></i>
+            </div>
+        </div>
+
+        <!-- Lower Body -->
+        <div class="workout-card bg-white rounded-2xl card-shadow overflow-hidden transition-transform" onclick="selectWorkout('lower')">
+            <div class="flex items-center p-4">
+                <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mr-4">
+                    <i class="fas fa-person-walking text-white text-2xl"></i>
+                </div>
+                <div class="flex-1">
+                    <h3 class="font-bold text-gray-800 text-lg">Lower Body</h3>
+                    <p class="text-sm text-gray-500">Legs, Glutes, Calves</p>
+                    <div class="flex items-center mt-1 text-xs text-gray-400">
+                        <span class="mr-3"><i class="fas fa-clock mr-1"></i>30 min</span>
+                        <span><i class="fas fa-fire mr-1"></i>220 cal</span>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-right text-gray-400"></i>
+            </div>
+        </div>
+
+        <!-- Core -->
+        <div class="workout-card bg-white rounded-2xl card-shadow overflow-hidden transition-transform" onclick="selectWorkout('core')">
+            <div class="flex items-center p-4">
+                <div class="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mr-4">
+                    <i class="fas fa-circle text-white text-2xl"></i>
+                </div>
+                <div class="flex-1">
+                    <h3 class="font-bold text-gray-800 text-lg">Core</h3>
+                    <p class="text-sm text-gray-500">Abs, Obliques, Back</p>
+                    <div class="flex items-center mt-1 text-xs text-gray-400">
+                        <span class="mr-3"><i class="fas fa-clock mr-1"></i>20 min</span>
+                        <span><i class="fas fa-fire mr-1"></i>150 cal</span>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-right text-gray-400"></i>
+            </div>
+        </div>
+
+        <!-- Full Body -->
+        <div class="workout-card bg-white rounded-2xl card-shadow overflow-hidden transition-transform" onclick="selectWorkout('full')">
+            <div class="flex items-center p-4">
+                <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mr-4">
+                    <i class="fas fa-person text-white text-2xl"></i>
+                </div>
+                <div class="flex-1">
+                    <h3 class="font-bold text-gray-800 text-lg">Full Body</h3>
+                    <p class="text-sm text-gray-500">Complete workout</p>
+                    <div class="flex items-center mt-1 text-xs text-gray-400">
+                        <span class="mr-3"><i class="fas fa-clock mr-1"></i>35 min</span>
+                        <span><i class="fas fa-fire mr-1"></i>280 cal</span>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-right text-gray-400"></i>
+            </div>
+        </div>
+
+        <!-- Cardio -->
+        <div class="workout-card bg-white rounded-2xl card-shadow overflow-hidden transition-transform" onclick="selectWorkout('cardio')">
+            <div class="flex items-center p-4">
+                <div class="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center mr-4">
+                    <i class="fas fa-heart-pulse text-white text-2xl"></i>
+                </div>
+                <div class="flex-1">
+                    <h3 class="font-bold text-gray-800 text-lg">Cardio HIIT</h3>
+                    <p class="text-sm text-gray-500">High intensity intervals</p>
+                    <div class="flex items-center mt-1 text-xs text-gray-400">
+                        <span class="mr-3"><i class="fas fa-clock mr-1"></i>20 min</span>
+                        <span><i class="fas fa-fire mr-1"></i>250 cal</span>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-right text-gray-400"></i>
+            </div>
+        </div>
+
+        <!-- Stretching -->
+        <div class="workout-card bg-white rounded-2xl card-shadow overflow-hidden transition-transform" onclick="selectWorkout('stretch')">
+            <div class="flex items-center p-4">
+                <div class="w-16 h-16 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl flex items-center justify-center mr-4">
+                    <i class="fas fa-spa text-white text-2xl"></i>
+                </div>
+                <div class="flex-1">
+                    <h3 class="font-bold text-gray-800 text-lg">Stretching</h3>
+                    <p class="text-sm text-gray-500">Flexibility & Recovery</p>
+                    <div class="flex items-center mt-1 text-xs text-gray-400">
+                        <span class="mr-3"><i class="fas fa-clock mr-1"></i>15 min</span>
+                        <span><i class="fas fa-fire mr-1"></i>50 cal</span>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-right text-gray-400"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Tab Navigation -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
+        <div class="max-w-md mx-auto px-4">
+            <div class="flex items-center justify-around py-2">
+                <a href="home.html" class="flex flex-col items-center py-2 px-2 text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-home text-lg mb-1"></i>
+                    <span class="text-xs font-medium">Home</span>
+                </a>
+                <button class="flex flex-col items-center py-2 px-2 text-blue-600">
+                    <i class="fas fa-dumbbell text-lg mb-1"></i>
+                    <span class="text-xs font-medium">Workout</span>
+                </button>
+                <a href="nutrition.html" class="flex flex-col items-center py-2 px-2 text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-apple-alt text-lg mb-1"></i>
+                    <span class="text-xs font-medium">Nutrition</span>
+                </a>
+                <a href="trainers.html" class="flex flex-col items-center py-2 px-2 text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-user-tie text-lg mb-1"></i>
+                    <span class="text-xs font-medium">Trainers</span>
+                </a>
+                <a href="progress.html" class="flex flex-col items-center py-2 px-2 text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-chart-line text-lg mb-1"></i>
+                    <span class="text-xs font-medium">Progress</span>
+                </a>
+            </div>
+        </div>
+        <!-- iOS Home Indicator -->
+        <div class="h-6 flex items-center justify-center">
+            <div class="w-32 h-1 bg-gray-300 rounded-full"></div>
+        </div>
+    </div>
+
+    <!-- Workout Detail Modal -->
+    <div id="workout-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-3xl w-full max-w-sm overflow-hidden">
+            <div id="modal-header" class="bg-gradient-to-br from-blue-500 to-blue-600 p-6 text-white">
+                <h3 id="modal-title" class="text-xl font-bold mb-1">Upper Body</h3>
+                <p id="modal-subtitle" class="text-sm opacity-90">Chest, Arms, Shoulders</p>
+            </div>
+            <div class="p-6">
+                <h4 class="font-semibold text-gray-800 mb-3">Exercises</h4>
+                <div id="exercise-list" class="space-y-2 mb-6">
+                    <!-- Exercises will be populated by JS -->
+                </div>
+                <div class="flex items-center justify-between text-sm text-gray-500 mb-6">
+                    <span><i class="fas fa-clock mr-1"></i><span id="modal-duration">25</span> min</span>
+                    <span><i class="fas fa-fire mr-1"></i><span id="modal-calories">180</span> cal</span>
+                    <span><i class="fas fa-layer-group mr-1"></i><span id="modal-exercises">6</span> exercises</span>
+                </div>
+                <button onclick="startWorkoutSession()" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3.5 rounded-xl font-semibold">
+                    <i class="fas fa-play mr-2"></i>Start Workout
+                </button>
+                <button onclick="closeModal()" class="w-full text-gray-500 py-3 font-medium mt-2">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const workouts = {
+            upper: {
+                title: 'Upper Body',
+                subtitle: 'Chest, Arms, Shoulders',
+                gradient: 'from-blue-500 to-blue-600',
+                duration: 25,
+                calories: 180,
+                exercises: ['Push-ups', 'Diamond Push-ups', 'Pike Push-ups', 'Tricep Dips', 'Plank Shoulder Taps', 'Arm Circles']
+            },
+            lower: {
+                title: 'Lower Body',
+                subtitle: 'Legs, Glutes, Calves',
+                gradient: 'from-green-500 to-green-600',
+                duration: 30,
+                calories: 220,
+                exercises: ['Squats', 'Lunges', 'Glute Bridges', 'Calf Raises', 'Wall Sit', 'Jump Squats', 'Side Lunges']
+            },
+            core: {
+                title: 'Core',
+                subtitle: 'Abs, Obliques, Back',
+                gradient: 'from-orange-500 to-orange-600',
+                duration: 20,
+                calories: 150,
+                exercises: ['Crunches', 'Plank', 'Russian Twists', 'Leg Raises', 'Mountain Climbers', 'Dead Bug']
+            },
+            full: {
+                title: 'Full Body',
+                subtitle: 'Complete workout',
+                gradient: 'from-purple-500 to-purple-600',
+                duration: 35,
+                calories: 280,
+                exercises: ['Burpees', 'Squats', 'Push-ups', 'Lunges', 'Plank', 'Mountain Climbers', 'Jump Squats', 'Tricep Dips']
+            },
+            cardio: {
+                title: 'Cardio HIIT',
+                subtitle: 'High intensity intervals',
+                gradient: 'from-red-500 to-red-600',
+                duration: 20,
+                calories: 250,
+                exercises: ['Jumping Jacks', 'High Knees', 'Burpees', 'Mountain Climbers', 'Jump Squats', 'Skaters']
+            },
+            stretch: {
+                title: 'Stretching',
+                subtitle: 'Flexibility & Recovery',
+                gradient: 'from-teal-500 to-teal-600',
+                duration: 15,
+                calories: 50,
+                exercises: ['Neck Stretch', 'Shoulder Stretch', 'Quad Stretch', 'Hamstring Stretch', 'Hip Flexor Stretch', 'Cat-Cow']
+            }
+        };
+
+        let selectedWorkout = null;
+
+        function selectWorkout(type) {
+            selectedWorkout = type;
+            const workout = workouts[type];
+            
+            document.getElementById('modal-header').className = `bg-gradient-to-br ${workout.gradient} p-6 text-white`;
+            document.getElementById('modal-title').textContent = workout.title;
+            document.getElementById('modal-subtitle').textContent = workout.subtitle;
+            document.getElementById('modal-duration').textContent = workout.duration;
+            document.getElementById('modal-calories').textContent = workout.calories;
+            document.getElementById('modal-exercises').textContent = workout.exercises.length;
+            
+            const exerciseList = document.getElementById('exercise-list');
+            exerciseList.innerHTML = workout.exercises.map((ex, i) => `
+                <div class="flex items-center py-2 border-b border-gray-100 last:border-0">
+                    <span class="w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center text-xs text-gray-500 mr-3">${i + 1}</span>
+                    <span class="text-gray-700">${ex}</span>
+                </div>
+            `).join('');
+            
+            document.getElementById('workout-modal').classList.remove('hidden');
+            document.getElementById('workout-modal').classList.add('flex');
+        }
+
+        function closeModal() {
+            document.getElementById('workout-modal').classList.add('hidden');
+            document.getElementById('workout-modal').classList.remove('flex');
+        }
+
+        function startWorkoutSession() {
+            window.location.href = 'workout-session.html?type=' + selectedWorkout;
+        }
+    </script>
+</body>
+</html>

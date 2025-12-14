@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Search - WorkHome</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+        .card-shadow { box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen pb-8">
+    <!-- iOS Status Bar -->
+    <div class="bg-white">
+        <div class="max-w-md mx-auto h-11 flex items-center justify-between px-6 text-gray-800 text-sm font-medium">
+            <span>9:41</span>
+            <div class="flex items-center space-x-1">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <div class="bg-white shadow-sm">
+        <div class="max-w-md mx-auto px-6 py-4">
+            <div class="flex items-center">
+                <a href="nutrition.html" class="w-10 h-10 flex items-center justify-center mr-3">
+                    <i class="fas fa-arrow-left text-gray-600"></i>
+                </a>
+                <div class="flex-1">
+                    <h1 class="text-lg font-bold text-gray-800">Add Food</h1>
+                    <p class="text-xs text-gray-500">Search USDA Food Database</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="max-w-md mx-auto px-6 py-4">
+        <div class="relative">
+            <input 
+                type="text" 
+                id="search-input"
+                placeholder="Search for food..."
+                class="w-full px-4 py-3.5 pl-12 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none card-shadow"
+                oninput="searchFood(this.value)"
+            >
+            <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            <button id="clear-btn" onclick="clearSearch()" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 hidden">
+                <i class="fas fa-times-circle"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-md mx-auto px-6">
+        <!-- Loading State -->
+        <div id="loading" class="hidden py-12 text-center">
+            <i class="fas fa-spinner fa-spin text-3xl text-blue-600 mb-4"></i>
+            <p class="text-gray-500">Searching USDA database...</p>
+        </div>
+
+        <!-- Initial State -->
+        <div id="initial-state" class="py-8">
+            <h3 class="font-bold text-gray-800 mb-4">Recent Foods</h3>
+            <div class="space-y-3">
+                <div class="bg-white rounded-xl p-4 card-shadow flex items-center" onclick="selectFood('Chicken Breast', 165, '100g')">
+                    <div class="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center mr-3">
+                        <i class="fas fa-drumstick-bite text-orange-500"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-medium text-gray-800">Chicken Breast</p>
+                        <p class="text-xs text-gray-500">165 cal per 100g</p>
+                    </div>
+                    <i class="fas fa-plus text-blue-600"></i>
+                </div>
+                <div class="bg-white rounded-xl p-4 card-shadow flex items-center" onclick="selectFood('Brown Rice', 112, '100g')">
+                    <div class="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center mr-3">
+                        <i class="fas fa-wheat-awn text-amber-600"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-medium text-gray-800">Brown Rice</p>
+                        <p class="text-xs text-gray-500">112 cal per 100g</p>
+                    </div>
+                    <i class="fas fa-plus text-blue-600"></i>
+                </div>
+                <div class="bg-white rounded-xl p-4 card-shadow flex items-center" onclick="selectFood('Banana', 89, '1 medium')">
+                    <div class="w-10 h-10 bg-yellow-100 rounded-xl flex items-center justify-center mr-3">
+                        <i class="fas fa-apple-whole text-yellow-500"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-medium text-gray-800">Banana</p>
+                        <p class="text-xs text-gray-500">89 cal per medium</p>
+                    </div>
+                    <i class="fas fa-plus text-blue-600"></i>
+                </div>
+            </div>
+
+            <h3 class="font-bold text-gray-800 mb-4 mt-6">Popular Foods</h3>
+            <div class="grid grid-cols-3 gap-3">
+                <button onclick="searchFood('apple')" class="bg-white rounded-xl p-3 card-shadow text-center hover:bg-gray-50">
+                    <div class="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center mx-auto mb-2">
+                        <i class="fas fa-apple-whole text-red-500"></i>
+                    </div>
+                    <p class="text-xs font-medium text-gray-700">Apple</p>
+                </button>
+                <button onclick="searchFood('egg')" class="bg-white rounded-xl p-3 card-shadow text-center hover:bg-gray-50">
+                    <div class="w-10 h-10 bg-yellow-100 rounded-xl flex items-center justify-center mx-auto mb-2">
+                        <i class="fas fa-egg text-yellow-500"></i>
+                    </div>
+                    <p class="text-xs font-medium text-gray-700">Eggs</p>
+                </button>
+                <button onclick="searchFood('milk')" class="bg-white rounded-xl p-3 card-shadow text-center hover:bg-gray-50">
+                    <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-2">
+                        <i class="fas fa-glass-water text-blue-500"></i>
+                    </div>
+                    <p class="text-xs font-medium text-gray-700">Milk</p>
+                </button>
+                <button onclick="searchFood('bread')" class="bg-white rounded-xl p-3 card-shadow text-center hover:bg-gray-50">
+                    <div class="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center mx-auto mb-2">
+                        <i class="fas fa-bread-slice text-amber-600"></i>
+                    </div>
+                    <p class="text-xs font-medium text-gray-700">Bread</p>
+                </button>
+                <button onclick="searchFood('salmon')" class="bg-white rounded-xl p-3 card-shadow text-center hover:bg-gray-50">
+                    <div class="w-10 h-10 bg-pink-100 rounded-xl flex items-center justify-center mx-auto mb-2">
+                        <i class="fas fa-fish text-pink-500"></i>
+                    </div>
+                    <p class="text-xs font-medium text-gray-700">Salmon</p>
+                </button>
+                <button onclick="searchFood('broccoli')" class="bg-white rounded-xl p-3 card-shadow text-center hover:bg-gray-50">
+                    <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-2">
+                        <i class="fas fa-leaf text-green-500"></i>
+                    </div>
+                    <p class="text-xs font-medium text-gray-700">Broccoli</p>
+                </button>
+            </div>
+        </div>
+
+        <!-- Search Results -->
+        <div id="search-results" class="hidden space-y-3">
+            <p id="results-count" class="text-sm text-gray-500 mb-4"></p>
+            <div id="results-list"></div>
+        </div>
+
+        <!-- No Results -->
+        <div id="no-results" class="hidden py-12 text-center">
+            <i class="fas fa-search text-4xl text-gray-300 mb-4"></i>
+            <p class="text-gray-500">No foods found</p>
+            <p class="text-sm text-gray-400">Try a different search term</p>
+        </div>
+    </div>
+
+    <!-- Add Food Modal -->
+    <div id="add-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center p-6 z-50">
+        <div class="bg-white rounded-3xl w-full max-w-sm overflow-hidden">
+            <div class="p-6">
+                <h3 id="modal-food-name" class="text-xl font-bold text-gray-800 mb-1">Chicken Breast</h3>
+                <p id="modal-food-cal" class="text-gray-500 mb-6">165 cal per 100g</p>
+                
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Serving Size</label>
+                    <div class="flex items-center space-x-3">
+                        <button onclick="adjustServing(-0.5)" class="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-minus text-gray-600"></i>
+                        </button>
+                        <input type="text" id="serving-input" value="1" class="flex-1 text-center text-2xl font-bold text-gray-800 border-b-2 border-gray-200 focus:border-blue-500 outline-none py-2">
+                        <button onclick="adjustServing(0.5)" class="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-plus text-gray-600"></i>
+                        </button>
+                    </div>
+                    <p class="text-center text-sm text-gray-500 mt-2">servings</p>
+                </div>
+
+                <div class="bg-gray-50 rounded-xl p-4 mb-6">
+                    <div class="flex justify-between mb-2">
+                        <span class="text-gray-600">Calories</span>
+                        <span id="total-cal" class="font-bold text-gray-800">165</span>
+                    </div>
+                    <div class="flex justify-between mb-2">
+                        <span class="text-gray-600">Protein</span>
+                        <span class="font-medium text-gray-800">31g</span>
+                    </div>
+                    <div class="flex justify-between mb-2">
+                        <span class="text-gray-600">Carbs</span>
+                        <span class="font-medium text-gray-800">0g</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Fat</span>
+                        <span class="font-medium text-gray-800">3.6g</span>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Add to Meal</label>
+                    <select class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-white focus:ring-2 focus:ring-blue-500 outline-none">
+                        <option>Breakfast</option>
+                        <option>Lunch</option>
+                        <option selected>Dinner</option>
+                        <option>Snack</option>
+                    </select>
+                </div>
+
+                <button onclick="addFood()" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3.5 rounded-xl font-semibold">
+                    Add Food
+                </button>
+                <button onclick="closeModal()" class="w-full text-gray-500 py-3 font-medium">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // USDA FoodData Central API
+        const API_KEY = 'DEMO_KEY'; // Replace with actual API key
+        const API_URL = 'https://api.nal.usda.gov/fdc/v1/foods/search';
+
+        let searchTimeout = null;
+        let selectedFoodCal = 165;
+
+        async function searchFood(query) {
+            if (!query || query.length < 2) {
+                document.getElementById('initial-state').classList.remove('hidden');
+                document.getElementById('search-results').classList.add('hidden');
+                document.getElementById('no-results').classList.add('hidden');
+                document.getElementById('clear-btn').classList.add('hidden');
+                return;
+            }
+
+            document.getElementById('search-input').value = query;
+            document.getElementById('clear-btn').classList.remove('hidden');
+
+            // Debounce search
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(async () => {
+                document.getElementById('initial-state').classList.add('hidden');
+                document.getElementById('search-results').classList.add('hidden');
+                document.getElementById('no-results').classList.add('hidden');
+                document.getElementById('loading').classList.remove('hidden');
+
+                try {
+                    // Simulated API response for demo (replace with actual API call)
+                    // const response = await fetch(`${API_URL}?api_key=${API_KEY}&query=${query}&pageSize=10`);
+                    // const data = await response.json();
+                    
+                    // Simulated data for demo
+                    await new Promise(resolve => setTimeout(resolve, 800));
+                    const mockResults = getMockResults(query);
+                    
+                    document.getElementById('loading').classList.add('hidden');
+
+                    if (mockResults.length > 0) {
+                        displayResults(mockResults);
+                    } else {
+                        document.getElementById('no-results').classList.remove('hidden');
+                    }
+                } catch (error) {
+                    console.error('Search error:', error);
+                    document.getElementById('loading').classList.add('hidden');
+                    document.getElementById('no-results').classList.remove('hidden');
+                }
+            }, 300);
+        }
+
+        function getMockResults(query) {
+            const foods = [
+                { name: 'Apple, raw', calories: 52, serving: '100g', protein: 0.3, carbs: 14, fat: 0.2 },
+                { name: 'Apple, dried', calories: 243, serving: '100g', protein: 0.9, carbs: 65, fat: 0.3 },
+                { name: 'Chicken Breast, grilled', calories: 165, serving: '100g', protein: 31, carbs: 0, fat: 3.6 },
+                { name: 'Chicken Thigh, roasted', calories: 209, serving: '100g', protein: 26, carbs: 0, fat: 11 },
+                { name: 'Egg, whole, boiled', calories: 155, serving: '100g', protein: 13, carbs: 1.1, fat: 11 },
+                { name: 'Egg, white only', calories: 52, serving: '100g', protein: 11, carbs: 0.7, fat: 0.2 },
+                { name: 'Milk, whole', calories: 61, serving: '100ml', protein: 3.2, carbs: 4.8, fat: 3.3 },
+                { name: 'Milk, skim', calories: 34, serving: '100ml', protein: 3.4, carbs: 5, fat: 0.1 },
+                { name: 'Bread, white', calories: 265, serving: '100g', protein: 9, carbs: 49, fat: 3.2 },
+                { name: 'Bread, whole wheat', calories: 247, serving: '100g', protein: 13, carbs: 41, fat: 3.4 },
+                { name: 'Salmon, Atlantic', calories: 208, serving: '100g', protein: 20, carbs: 0, fat: 13 },
+                { name: 'Broccoli, raw', calories: 34, serving: '100g', protein: 2.8, carbs: 7, fat: 0.4 },
+                { name: 'Banana, raw', calories: 89, serving: '100g', protein: 1.1, carbs: 23, fat: 0.3 },
+                { name: 'Rice, brown, cooked', calories: 112, serving: '100g', protein: 2.6, carbs: 24, fat: 0.9 },
+                { name: 'Rice, white, cooked', calories: 130, serving: '100g', protein: 2.7, carbs: 28, fat: 0.3 },
+                { name: 'Oatmeal, cooked', calories: 68, serving: '100g', protein: 2.4, carbs: 12, fat: 1.4 },
+            ];
+
+            return foods.filter(f => f.name.toLowerCase().includes(query.toLowerCase()));
+        }
+
+        function displayResults(results) {
+            document.getElementById('results-count').textContent = `${results.length} results found`;
+            
+            const resultsList = document.getElementById('results-list');
+            resultsList.innerHTML = results.map(food => `
+                <div class="bg-white rounded-xl p-4 card-shadow flex items-center mb-3 cursor-pointer hover:bg-gray-50" 
+                     onclick="selectFood('${food.name}', ${food.calories}, '${food.serving}', ${food.protein}, ${food.carbs}, ${food.fat})">
+                    <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center mr-3">
+                        <i class="fas fa-utensils text-green-600"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-medium text-gray-800">${food.name}</p>
+                        <p class="text-xs text-gray-500">${food.calories} cal per ${food.serving}</p>
+                    </div>
+                    <i class="fas fa-plus text-blue-600"></i>
+                </div>
+            `).join('');
+
+            document.getElementById('search-results').classList.remove('hidden');
+        }
+
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            document.getElementById('clear-btn').classList.add('hidden');
+            document.getElementById('initial-state').classList.remove('hidden');
+            document.getElementById('search-results').classList.add('hidden');
+            document.getElementById('no-results').classList.add('hidden');
+        }
+
+        function selectFood(name, calories, serving, protein = 0, carbs = 0, fat = 0) {
+            selectedFoodCal = calories;
+            document.getElementById('modal-food-name').textContent = name;
+            document.getElementById('modal-food-cal').textContent = `${calories} cal per ${serving}`;
+            document.getElementById('serving-input').value = '1';
+            document.getElementById('total-cal').textContent = calories;
+            
+            document.getElementById('add-modal').classList.remove('hidden');
+            document.getElementById('add-modal').classList.add('flex');
+        }
+
+        function adjustServing(amount) {
+            const input = document.getElementById('serving-input');
+            let value = parseFloat(input.value) + amount;
+            if (value < 0.5) value = 0.5;
+            if (value > 10) value = 10;
+            input.value = value;
+            document.getElementById('total-cal').textContent = Math.round(selectedFoodCal * value);
+        }
+
+        function closeModal() {
+            document.getElementById('add-modal').classList.add('hidden');
+            document.getElementById('add-modal').classList.remove('flex');
+        }
+
+        function addFood() {
+            alert('Food added to your meal log!');
+            closeModal();
+            window.location.href = 'nutrition.html';
+        }
+    </script>
+</body>
+</html>

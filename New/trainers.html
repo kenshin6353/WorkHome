@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trainers - WorkHome</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+        .card-shadow { box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen pb-24">
+    <!-- iOS Status Bar -->
+    <div class="bg-white">
+        <div class="max-w-md mx-auto h-11 flex items-center justify-between px-6 text-gray-800 text-sm font-medium">
+            <span>9:41</span>
+            <div class="flex items-center space-x-1">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <div class="bg-white shadow-sm">
+        <div class="max-w-md mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800">Trainers</h1>
+                    <p class="text-sm text-gray-500">Find your perfect coach</p>
+                </div>
+                <button class="w-11 h-11 bg-gray-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-filter text-gray-600"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="max-w-md mx-auto px-6 py-4">
+        <div class="relative">
+            <input 
+                type="text" 
+                placeholder="Search trainers..."
+                class="w-full px-4 py-3 pl-12 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none card-shadow"
+            >
+            <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-md mx-auto px-6 space-y-4">
+        <!-- Featured Trainer -->
+        <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-5 text-white">
+            <div class="flex items-center">
+                <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=100&h=100&fit=crop&crop=face" alt="Featured Trainer" class="w-16 h-16 rounded-full object-cover border-2 border-white mr-4">
+                <div class="flex-1">
+                    <span class="text-xs bg-white/20 px-2 py-1 rounded-full">Featured</span>
+                    <h3 class="font-bold text-lg mt-1">Mike Johnson</h3>
+                    <p class="text-sm opacity-90">Strength & Conditioning</p>
+                    <div class="flex items-center mt-1">
+                        <i class="fas fa-star text-yellow-300 text-sm"></i>
+                        <span class="text-sm ml-1">4.9 (128 reviews)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trainers List -->
+        <h3 class="font-bold text-gray-800">All Trainers</h3>
+        
+        <!-- Trainer Card 1 -->
+        <div class="bg-white rounded-2xl card-shadow overflow-hidden">
+            <div class="p-4">
+                <div class="flex items-start">
+                    <a href="trainer-profile.html?id=1">
+                        <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=100&h=100&fit=crop&crop=face" alt="Sarah Williams" class="w-16 h-16 rounded-xl object-cover mr-4">
+                    </a>
+                    <div class="flex-1">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <a href="trainer-profile.html?id=1" class="font-bold text-gray-800 hover:text-blue-600">Sarah Williams</a>
+                                <p class="text-sm text-gray-500">Weight Loss Specialist</p>
+                            </div>
+                            <div class="flex items-center bg-yellow-50 px-2 py-1 rounded-lg">
+                                <i class="fas fa-star text-yellow-500 text-xs"></i>
+                                <span class="text-sm font-semibold text-yellow-700 ml-1">4.8</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center mt-2 text-xs text-gray-500">
+                            <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded-full mr-2">Certified</span>
+                            <span>5 years exp.</span>
+                            <span class="mx-2">•</span>
+                            <span>89 reviews</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+                    <p class="text-sm text-gray-600"><i class="fas fa-users mr-1"></i>234 clients</p>
+                    <div class="flex space-x-2">
+                        <a href="https://wa.me/1234567891" target="_blank" class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors">
+                            <i class="fab fa-whatsapp text-white"></i>
+                        </a>
+                        <a href="https://t.me/sarahwilliams" target="_blank" class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
+                            <i class="fab fa-telegram text-white"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trainer Card 2 -->
+        <div class="bg-white rounded-2xl card-shadow overflow-hidden">
+            <div class="p-4">
+                <div class="flex items-start">
+                    <a href="trainer-profile.html?id=2">
+                        <img src="https://images.unsplash.com/photo-1567013127542-490d757e51fc?w=100&h=100&fit=crop&crop=face" alt="David Chen" class="w-16 h-16 rounded-xl object-cover mr-4">
+                    </a>
+                    <div class="flex-1">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <a href="trainer-profile.html?id=2" class="font-bold text-gray-800 hover:text-blue-600">David Chen</a>
+                                <p class="text-sm text-gray-500">HIIT & Cardio Expert</p>
+                            </div>
+                            <div class="flex items-center bg-yellow-50 px-2 py-1 rounded-lg">
+                                <i class="fas fa-star text-yellow-500 text-xs"></i>
+                                <span class="text-sm font-semibold text-yellow-700 ml-1">4.9</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center mt-2 text-xs text-gray-500">
+                            <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded-full mr-2">Certified</span>
+                            <span>8 years exp.</span>
+                            <span class="mx-2">•</span>
+                            <span>156 reviews</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+                    <p class="text-sm text-gray-600"><i class="fas fa-users mr-1"></i>412 clients</p>
+                    <div class="flex space-x-2">
+                        <a href="https://wa.me/1234567892" target="_blank" class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors">
+                            <i class="fab fa-whatsapp text-white"></i>
+                        </a>
+                        <a href="https://t.me/davidchen" target="_blank" class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
+                            <i class="fab fa-telegram text-white"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trainer Card 3 -->
+        <div class="bg-white rounded-2xl card-shadow overflow-hidden">
+            <div class="p-4">
+                <div class="flex items-start">
+                    <a href="trainer-profile.html?id=3">
+                        <img src="https://images.unsplash.com/photo-1594381898411-846e7d193883?w=100&h=100&fit=crop&crop=face" alt="Emma Rodriguez" class="w-16 h-16 rounded-xl object-cover mr-4">
+                    </a>
+                    <div class="flex-1">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <a href="trainer-profile.html?id=3" class="font-bold text-gray-800 hover:text-blue-600">Emma Rodriguez</a>
+                                <p class="text-sm text-gray-500">Yoga & Flexibility</p>
+                            </div>
+                            <div class="flex items-center bg-yellow-50 px-2 py-1 rounded-lg">
+                                <i class="fas fa-star text-yellow-500 text-xs"></i>
+                                <span class="text-sm font-semibold text-yellow-700 ml-1">4.7</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center mt-2 text-xs text-gray-500">
+                            <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded-full mr-2">Certified</span>
+                            <span>6 years exp.</span>
+                            <span class="mx-2">•</span>
+                            <span>98 reviews</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+                    <p class="text-sm text-gray-600"><i class="fas fa-users mr-1"></i>189 clients</p>
+                    <div class="flex space-x-2">
+                        <a href="https://wa.me/1234567893" target="_blank" class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors">
+                            <i class="fab fa-whatsapp text-white"></i>
+                        </a>
+                        <a href="https://t.me/emmarodriguez" target="_blank" class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
+                            <i class="fab fa-telegram text-white"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trainer Card 4 -->
+        <div class="bg-white rounded-2xl card-shadow overflow-hidden">
+            <div class="p-4">
+                <div class="flex items-start">
+                    <a href="trainer-profile.html?id=4">
+                        <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=100&h=100&fit=crop&crop=face" alt="James Wilson" class="w-16 h-16 rounded-xl object-cover mr-4">
+                    </a>
+                    <div class="flex-1">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <a href="trainer-profile.html?id=4" class="font-bold text-gray-800 hover:text-blue-600">James Wilson</a>
+                                <p class="text-sm text-gray-500">Home Workout Expert</p>
+                            </div>
+                            <div class="flex items-center bg-yellow-50 px-2 py-1 rounded-lg">
+                                <i class="fas fa-star text-yellow-500 text-xs"></i>
+                                <span class="text-sm font-semibold text-yellow-700 ml-1">4.6</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center mt-2 text-xs text-gray-500">
+                            <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded-full mr-2">Certified</span>
+                            <span>4 years exp.</span>
+                            <span class="mx-2">•</span>
+                            <span>67 reviews</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+                    <p class="text-sm text-gray-600"><i class="fas fa-users mr-1"></i>145 clients</p>
+                    <div class="flex space-x-2">
+                        <a href="https://wa.me/1234567894" target="_blank" class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors">
+                            <i class="fab fa-whatsapp text-white"></i>
+                        </a>
+                        <a href="https://t.me/jameswilson" target="_blank" class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
+                            <i class="fab fa-telegram text-white"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Tab Navigation -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
+        <div class="max-w-md mx-auto px-4">
+            <div class="flex items-center justify-around py-2">
+                <a href="home.html" class="flex flex-col items-center py-2 px-2 text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-home text-lg mb-1"></i>
+                    <span class="text-xs font-medium">Home</span>
+                </a>
+                <a href="workout.html" class="flex flex-col items-center py-2 px-2 text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-dumbbell text-lg mb-1"></i>
+                    <span class="text-xs font-medium">Workout</span>
+                </a>
+                <a href="nutrition.html" class="flex flex-col items-center py-2 px-2 text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-apple-alt text-lg mb-1"></i>
+                    <span class="text-xs font-medium">Nutrition</span>
+                </a>
+                <button class="flex flex-col items-center py-2 px-2 text-blue-600">
+                    <i class="fas fa-user-tie text-lg mb-1"></i>
+                    <span class="text-xs font-medium">Trainers</span>
+                </button>
+                <a href="progress.html" class="flex flex-col items-center py-2 px-2 text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-chart-line text-lg mb-1"></i>
+                    <span class="text-xs font-medium">Progress</span>
+                </a>
+            </div>
+        </div>
+        <!-- iOS Home Indicator -->
+        <div class="h-6 flex items-center justify-center">
+            <div class="w-32 h-1 bg-gray-300 rounded-full"></div>
+        </div>
+    </div>
+</body>
+</html>

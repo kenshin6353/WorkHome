@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WorkHome - iOS App Prototype</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+        }
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            background: #000;
+            border-radius: 50px;
+            padding: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            border-radius: 40px;
+            overflow: hidden;
+            background: #fff;
+        }
+        .phone-frame:hover {
+            transform: scale(1.02);
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body class="p-8">
+    <!-- Header -->
+    <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-white mb-4">WorkHome</h1>
+        <p class="text-gray-400 text-lg">iOS Fitness App Prototype - Simplified Version</p>
+        <div class="flex items-center justify-center gap-4 mt-4">
+            <span class="bg-blue-600 text-white px-4 py-2 rounded-full text-sm">
+                <i class="fas fa-mobile-alt mr-2"></i>10 Screens
+            </span>
+            <span class="bg-purple-600 text-white px-4 py-2 rounded-full text-sm">
+                <i class="fas fa-dumbbell mr-2"></i>Home Workout
+            </span>
+            <span class="bg-green-600 text-white px-4 py-2 rounded-full text-sm">
+                <i class="fas fa-apple-alt mr-2"></i>USDA API
+            </span>
+        </div>
+    </div>
+
+    <!-- Authentication Screens -->
+    <div class="mb-12">
+        <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+            <i class="fas fa-lock mr-3 text-blue-400"></i>Authentication
+        </h2>
+        <div class="flex flex-wrap gap-8 justify-center">
+            <!-- Login -->
+            <div class="text-center">
+                <div class="phone-frame">
+                    <div class="phone-screen">
+                        <iframe src="login.html" class="w-full h-full border-0"></iframe>
+                    </div>
+                </div>
+                <p class="text-white mt-4 font-medium">Login</p>
+            </div>
+            <!-- Register -->
+            <div class="text-center">
+                <div class="phone-frame">
+                    <div class="phone-screen">
+                        <iframe src="register.html" class="w-full h-full border-0"></iframe>
+                    </div>
+                </div>
+                <p class="text-white mt-4 font-medium">Register</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App Screens -->
+    <div class="mb-12">
+        <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+            <i class="fas fa-th-large mr-3 text-green-400"></i>Main App (4 Tab Navigation)
+        </h2>
+        <div class="flex flex-wrap gap-8 justify-center">
+            <!-- Home -->
+            <div class="text-center">
+                <div class="phone-frame">
+                    <div class="phone-screen">
+                        <iframe src="home.html" class="w-full h-full border-0"></iframe>
+                    </div>
+                </div>
+                <p class="text-white mt-4 font-medium">Home Dashboard</p>
+            </div>
+            <!-- Workout -->
+            <div class="text-center">
+                <div class="phone-frame">
+                    <div class="phone-screen">
+                        <iframe src="workout.html" class="w-full h-full border-0"></iframe>
+                    </div>
+                </div>
+                <p class="text-white mt-4 font-medium">Workouts</p>
+            </div>
+            <!-- Nutrition -->
+            <div class="text-center">
+                <div class="phone-frame">
+                    <div class="phone-screen">
+                        <iframe src="nutrition.html" class="w-full h-full border-0"></iframe>
+                    </div>
+                </div>
+                <p class="text-white mt-4 font-medium">Nutrition</p>
+            </div>
+            <!-- Progress -->
+            <div class="text-center">
+                <div class="phone-frame">
+                    <div class="phone-screen">
+                        <iframe src="progress.html" class="w-full h-full border-0"></iframe>
+                    </div>
+                </div>
+                <p class="text-white mt-4 font-medium">Progress</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Secondary Screens -->
+    <div class="mb-12">
+        <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+            <i class="fas fa-layer-group mr-3 text-purple-400"></i>Secondary Screens
+        </h2>
+        <div class="flex flex-wrap gap-8 justify-center">
+            <!-- Workout Session -->
+            <div class="text-center">
+                <div class="phone-frame">
+                    <div class="phone-screen">
+                        <iframe src="workout-session.html" class="w-full h-full border-0"></iframe>
+                    </div>
+                </div>
+                <p class="text-white mt-4 font-medium">Workout Session</p>
+            </div>
+            <!-- Food Search -->
+            <div class="text-center">
+                <div class="phone-frame">
+                    <div class="phone-screen">
+                        <iframe src="food-search.html" class="w-full h-full border-0"></iframe>
+                    </div>
+                </div>
+                <p class="text-white mt-4 font-medium">Food Search (USDA)</p>
+            </div>
+            <!-- Achievements -->
+            <div class="text-center">
+                <div class="phone-frame">
+                    <div class="phone-screen">
+                        <iframe src="achievements.html" class="w-full h-full border-0"></iframe>
+                    </div>
+                </div>
+                <p class="text-white mt-4 font-medium">Achievements</p>
+            </div>
+            <!-- Profile -->
+            <div class="text-center">
+                <div class="phone-frame">
+                    <div class="phone-screen">
+                        <iframe src="profile.html" class="w-full h-full border-0"></iframe>
+                    </div>
+                </div>
+                <p class="text-white mt-4 font-medium">Profile & Settings</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Summary -->
+    <div class="max-w-4xl mx-auto bg-white/10 backdrop-blur rounded-2xl p-8 mb-8">
+        <h2 class="text-2xl font-bold text-white mb-6">Features Implemented</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-white/10 rounded-xl p-4 text-center">
+                <i class="fas fa-dumbbell text-2xl text-blue-400 mb-2"></i>
+                <p class="text-white text-sm">Home Workout Tracking</p>
+            </div>
+            <div class="bg-white/10 rounded-xl p-4 text-center">
+                <i class="fas fa-shoe-prints text-2xl text-green-400 mb-2"></i>
+                <p class="text-white text-sm">Step Tracking</p>
+            </div>
+            <div class="bg-white/10 rounded-xl p-4 text-center">
+                <i class="fas fa-apple-alt text-2xl text-red-400 mb-2"></i>
+                <p class="text-white text-sm">USDA Food API</p>
+            </div>
+            <div class="bg-white/10 rounded-xl p-4 text-center">
+                <i class="fas fa-fire text-2xl text-orange-400 mb-2"></i>
+                <p class="text-white text-sm">Calorie Tracker</p>
+            </div>
+            <div class="bg-white/10 rounded-xl p-4 text-center">
+                <i class="fas fa-chart-line text-2xl text-purple-400 mb-2"></i>
+                <p class="text-white text-sm">Progress Graphs</p>
+            </div>
+            <div class="bg-white/10 rounded-xl p-4 text-center">
+                <i class="fab fa-whatsapp text-2xl text-green-400 mb-2"></i>
+                <p class="text-white text-sm">Trainer Contact</p>
+            </div>
+            <div class="bg-white/10 rounded-xl p-4 text-center">
+                <i class="fas fa-trophy text-2xl text-yellow-400 mb-2"></i>
+                <p class="text-white text-sm">Gamification</p>
+            </div>
+            <div class="bg-white/10 rounded-xl p-4 text-center">
+                <i class="fas fa-bell text-2xl text-pink-400 mb-2"></i>
+                <p class="text-white text-sm">Notifications</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trainer Profile - WorkHome</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+        .card-shadow { box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen pb-8">
+    <!-- iOS Status Bar -->
+    <div class="bg-gradient-to-r from-blue-600 to-purple-600">
+        <div class="max-w-md mx-auto h-11 flex items-center justify-between px-6 text-white text-sm font-medium">
+            <span>9:41</span>
+            <div class="flex items-center space-x-1">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header with Background -->
+    <div class="bg-gradient-to-r from-blue-600 to-purple-600 pb-20">
+        <div class="max-w-md mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <a href="trainers.html" class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                    <i class="fas fa-arrow-left text-white"></i>
+                </a>
+                <h1 class="text-lg font-semibold text-white">Trainer Profile</h1>
+                <button class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                    <i class="fas fa-share text-white"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Card -->
+    <div class="max-w-md mx-auto px-6 -mt-16">
+        <div class="bg-white rounded-2xl card-shadow p-6">
+            <div class="flex flex-col items-center -mt-16">
+                <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=150&h=150&fit=crop&crop=face" alt="Sarah Williams" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg">
+                <h2 class="text-xl font-bold text-gray-800 mt-3">Sarah Williams</h2>
+                <p class="text-gray-500">Weight Loss Specialist</p>
+                <div class="flex items-center mt-2">
+                    <div class="flex items-center">
+                        <i class="fas fa-star text-yellow-500"></i>
+                        <i class="fas fa-star text-yellow-500"></i>
+                        <i class="fas fa-star text-yellow-500"></i>
+                        <i class="fas fa-star text-yellow-500"></i>
+                        <i class="fas fa-star-half-alt text-yellow-500"></i>
+                    </div>
+                    <span class="text-sm text-gray-600 ml-2">4.8 (89 reviews)</span>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-3 gap-4 mt-6 pt-6 border-t border-gray-100">
+                <div class="text-center">
+                    <p class="text-2xl font-bold text-blue-600">234</p>
+                    <p class="text-xs text-gray-500">Clients</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-2xl font-bold text-purple-600">5</p>
+                    <p class="text-xs text-gray-500">Years Exp.</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-2xl font-bold text-green-600">89</p>
+                    <p class="text-xs text-gray-500">Reviews</p>
+                </div>
+            </div>
+
+            <!-- Contact Buttons -->
+            <div class="flex space-x-3 mt-6">
+                <a href="https://wa.me/1234567891" target="_blank" class="flex-1 flex items-center justify-center py-3 bg-green-500 hover:bg-green-600 text-white rounded-xl transition-colors">
+                    <i class="fab fa-whatsapp text-xl mr-2"></i>
+                    <span class="font-semibold">WhatsApp</span>
+                </a>
+                <a href="https://t.me/sarahwilliams" target="_blank" class="flex-1 flex items-center justify-center py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-xl transition-colors">
+                    <i class="fab fa-telegram text-xl mr-2"></i>
+                    <span class="font-semibold">Telegram</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-md mx-auto px-6 py-4 space-y-4">
+        <!-- About -->
+        <div class="bg-white rounded-2xl p-5 card-shadow">
+            <h3 class="font-bold text-gray-800 mb-3">About</h3>
+            <p class="text-gray-600 text-sm leading-relaxed">
+                Hi! I'm Sarah, a certified personal trainer specializing in weight loss and body transformation. 
+                With 5 years of experience, I've helped over 200 clients achieve their fitness goals through 
+                personalized home workout programs and nutrition guidance. Let's work together to transform your life!
+            </p>
+            <div class="flex flex-wrap gap-2 mt-4">
+                <span class="bg-blue-100 text-blue-700 text-xs px-3 py-1 rounded-full">Weight Loss</span>
+                <span class="bg-purple-100 text-purple-700 text-xs px-3 py-1 rounded-full">Home Workouts</span>
+                <span class="bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full">Nutrition</span>
+                <span class="bg-orange-100 text-orange-700 text-xs px-3 py-1 rounded-full">HIIT</span>
+            </div>
+        </div>
+
+        <!-- Certifications -->
+        <div class="bg-white rounded-2xl p-5 card-shadow">
+            <h3 class="font-bold text-gray-800 mb-3">Certifications</h3>
+            <div class="space-y-3">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center mr-3">
+                        <i class="fas fa-certificate text-blue-600"></i>
+                    </div>
+                    <div>
+                        <p class="font-medium text-gray-800">ACE Certified Personal Trainer</p>
+                        <p class="text-xs text-gray-500">American Council on Exercise</p>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center mr-3">
+                        <i class="fas fa-award text-green-600"></i>
+                    </div>
+                    <div>
+                        <p class="font-medium text-gray-800">Precision Nutrition Level 1</p>
+                        <p class="text-xs text-gray-500">Nutrition Coaching Certification</p>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center mr-3">
+                        <i class="fas fa-medal text-purple-600"></i>
+                    </div>
+                    <div>
+                        <p class="font-medium text-gray-800">NASM Weight Loss Specialist</p>
+                        <p class="text-xs text-gray-500">National Academy of Sports Medicine</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reviews -->
+        <div class="bg-white rounded-2xl p-5 card-shadow">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-gray-800">Reviews</h3>
+                <span class="text-sm text-blue-600 font-medium">See All</span>
+            </div>
+            
+            <!-- Review 1 -->
+            <div class="border-b border-gray-100 pb-4 mb-4">
+                <div class="flex items-start">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&h=50&fit=crop&crop=face" alt="User" class="w-10 h-10 rounded-full object-cover mr-3">
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <p class="font-semibold text-gray-800">Jessica M.</p>
+                            <span class="text-xs text-gray-400">2 days ago</span>
+                        </div>
+                        <div class="flex items-center my-1">
+                            <i class="fas fa-star text-yellow-500 text-xs"></i>
+                            <i class="fas fa-star text-yellow-500 text-xs"></i>
+                            <i class="fas fa-star text-yellow-500 text-xs"></i>
+                            <i class="fas fa-star text-yellow-500 text-xs"></i>
+                            <i class="fas fa-star text-yellow-500 text-xs"></i>
+                        </div>
+                        <p class="text-sm text-gray-600">Sarah is amazing! Lost 10kg in 3 months with her program. She's always available to answer questions and keeps me motivated.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review 2 -->
+            <div class="border-b border-gray-100 pb-4 mb-4">
+                <div class="flex items-start">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face" alt="User" class="w-10 h-10 rounded-full object-cover mr-3">
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <p class="font-semibold text-gray-800">Michael T.</p>
+                            <span class="text-xs text-gray-400">1 week ago</span>
+                        </div>
+                        <div class="flex items-center my-1">
+                            <i class="fas fa-star text-yellow-500 text-xs"></i>
+                            <i class="fas fa-star text-yellow-500 text-xs"></i>
+                            <i class="fas fa-star text-yellow-500 text-xs"></i>
+                            <i class="fas fa-star text-yellow-500 text-xs"></i>
+                            <i class="fas fa-star text-yellow-500 text-xs"></i>
+                        </div>
+                        <p class="text-sm text-gray-600">Best trainer I've ever worked with. The home workout plans are perfect for my busy schedule.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review 3 -->
+            <div>
+                <div class="flex items-start">
+                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=50&h=50&fit=crop&crop=face" alt="User" class="w-10 h-10 rounded-full object-cover mr-3">
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <p class="font-semibold text-gray-800">Amanda K.</p>
+                            <span class="text-xs text-gray-400">2 weeks ago</span>
+                        </div>
+                        <div class="flex items-center my-1">
+                            <i class="fas fa-star text-yellow-500 text-xs"></i>
+                            <i class="fas fa-star text-yellow-500 text-xs"></i>
+                            <i class="fas fa-star text-yellow-500 text-xs"></i>
+                            <i class="fas fa-star text-yellow-500 text-xs"></i>
+                            <i class="far fa-star text-yellow-500 text-xs"></i>
+                        </div>
+                        <p class="text-sm text-gray-600">Very knowledgeable and supportive. The nutrition tips have been game-changing for me!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Availability -->
+        <div class="bg-white rounded-2xl p-5 card-shadow">
+            <h3 class="font-bold text-gray-800 mb-3">Availability</h3>
+            <div class="flex items-center text-sm text-gray-600">
+                <i class="fas fa-clock text-blue-500 mr-2"></i>
+                <span>Mon - Fri: 9:00 AM - 6:00 PM</span>
+            </div>
+            <div class="flex items-center text-sm text-gray-600 mt-2">
+                <i class="fas fa-clock text-blue-500 mr-2"></i>
+                <span>Sat: 10:00 AM - 2:00 PM</span>
+            </div>
+            <p class="text-xs text-gray-400 mt-3">Response time: Usually within 2 hours</p>
+        </div>
+    </div>
+
+    <!-- iOS Home Indicator -->
+    <div class="fixed bottom-0 left-0 right-0 h-8 flex items-center justify-center bg-gray-50">
+        <div class="w-32 h-1 bg-gray-300 rounded-full"></div>
+    </div>
+</body>
+</html>
