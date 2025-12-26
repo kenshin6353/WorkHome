@@ -526,6 +526,167 @@ struct ProfileView: View {
 | **@ObservedObject** | Наблюдение за переданным объектом | HomeView, ProfileView наблюдают за AuthManager |
 | **@Environment** | Доступ к системным значениям | Получение ModelContext для SwiftData |
 
+## 4.5. HealthKitManager
+
+Чтобы связать это приложение с приложением Apple Health и получить данные о показателях здоровья из библиотеки HealthKit [10], необходимо настроить некоторый класс, который будет обрабатывать все методы, запрашивающие аутентификацию пользователя, чтобы получить доступ к этим данным, а также для получения необходимых данных. Этот класс был реализован с шаблоном «одиночка», так как тот же случай, что и SwiftDataManager, например, необходимость создания только одного экземпляра при запуске приложения, но поскольку этот класс будет работать с представлениями, он реализует протокол ObservableObject с декоратором @MainActor для обеспечения потокобезопасности при обновлении UI.
+
+На рисунке 4.15 приведена диаграмма классов класса HealthKitManager. При первом запуске приложения, приложение запрашивает доступ данных к Apple Health, экран для запроса доступа представлен на рисунке 4.16. Следует отметить, что этот экран автоматический создан устройством, то есть без создания отдельного представления или логики.
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                      HealthKitManager                            │
+├─────────────────────────────────────────────────────────────────┤
+│ + shared: HealthKitManager              «static»                 │
+│ - healthStore: HKHealthStore            «private»                │
+│ + stepCount: Int                        «@Published»             │
+│ + caloriesBurned: Double                «@Published»             │
+│ + distanceWalked: Double                «@Published»             │
+│ + isAuthorized: Bool                    «@Published»             │
+├─────────────────────────────────────────────────────────────────┤
+│ - init()                                «private»                │
+│ + requestAuthorization() async -> Bool                           │
+│ + fetchTodaySteps() async                                        │
+│ + fetchTodayCalories() async                                     │
+│ + fetchTodayDistance() async                                     │
+│ + fetchAllTodayData() async                                      │
+│ + stepProgress: Double                  «computed»               │
+│ + stepProgressPercentage: Int           «computed»               │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Рисунок 4.15 – Диаграмма классов класса HealthKitManager**
+
+### Метод requestAuthorization() – Запрос разрешения
+
+Метод requestAuthorization() запрашивает у пользователя разрешение на доступ к данным Apple Health (рисунок 4.16). Во-первых, необходимо проверить, доступен ли HealthKit на данном устройстве с помощью метода HKHealthStore.isHealthDataAvailable(). Затем создается набор типов данных, которые приложение хочет читать: количество шагов (stepCount), активные калории (activeEnergyBurned) и пройденное расстояние (distanceWalkingRunning). После этого вызывается асинхронный метод requestAuthorization() объекта HKHealthStore.
+
+```swift
+func requestAuthorization() async -> Bool {
+    // Проверка доступности HealthKit на устройстве
+    guard HKHealthStore.isHealthDataAvailable() else {
+        print("HealthKit is not available on this device")
+        return false
+    }
+    
+    // Определение типов данных для чтения
+    let typesToRead: Set<HKObjectType> = [
+        HKObjectType.quantityType(forIdentifier: .stepCount)!,
+        HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
+        HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!
+    ]
+    
+    do {
+        // Асинхронный запрос разрешения у пользователя
+        try await healthStore.requestAuthorization(toShare: [], read: typesToRead)
+        await MainActor.run {
+            self.isAuthorized = true
+        }
+        return true
+    } catch {
+        print("HealthKit authorization failed: \(error.localizedDescription)")
+        return false
+    }
+}
+```
+
+**Рисунок 4.16 – Листинг программы метода запроса разрешения на доступ к HealthKit**
+
+### Метод fetchTodaySteps() – Получение количества шагов
+
+Метод fetchTodaySteps() получает количество шагов пользователя за текущий день (рисунок 4.17). Этот метод принимает ноль параметров и обновляет свойство stepCount класса. Во-первых, необходимо создать правильный временной интервал от начала дня до текущего момента. Затем создается предикат HKQuery.predicateForSamples() с логикой: время >= startOfDay && время <= now. Для получения суммарного значения используется HKStatisticsQuery с опцией .cumulativeSum. Результат преобразуется в целое число с помощью HKUnit.count().
+
+```swift
+func fetchTodaySteps() async {
+    // Получение типа данных для шагов
+    guard let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount) else { return }
+    
+    // Вычисление временного интервала (от начала дня до текущего момента)
+    let now = Date()
+    let startOfDay = Calendar.current.startOfDay(for: now)
+    let predicate = HKQuery.predicateForSamples(withStart: startOfDay, end: now, options: .strictStartDate)
+    
+    // Создание запроса статистики с суммированием
+    let query = HKStatisticsQuery(quantityType: stepType, quantitySamplePredicate: predicate, options: .cumulativeSum) { [weak self] _, result, error in
+        guard let self = self, error == nil, let sum = result?.sumQuantity() else {
+            return
+        }
+        
+        // Преобразование результата в целое число
+        let steps = Int(sum.doubleValue(for: HKUnit.count()))
+        Task { @MainActor in
+            self.stepCount = steps
+        }
+    }
+    
+    // Выполнение запроса
+    healthStore.execute(query)
+}
+```
+
+**Рисунок 4.17 – Листинг программы метода получения количества шагов за день**
+
+### Метод fetchTodayCalories() – Получение сожженных калорий
+
+Метод fetchTodayCalories() получает количество активных калорий, сожженных пользователем за текущий день (рисунок 4.18). Единственная разница между этим методом и предыдущим заключается в том, что он возвращает только количество калорий activeEnergyBurned, который представляет HKQuantityTypeIdentifier переданного параметра. Также используется другая единица измерения — HKUnit.kilocalorie() для преобразования результата в килокалории.
+
+```swift
+func fetchTodayCalories() async {
+    // Получение типа данных для активных калорий
+    guard let calorieType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned) else { return }
+    
+    let now = Date()
+    let startOfDay = Calendar.current.startOfDay(for: now)
+    let predicate = HKQuery.predicateForSamples(withStart: startOfDay, end: now, options: .strictStartDate)
+    
+    let query = HKStatisticsQuery(quantityType: calorieType, quantitySamplePredicate: predicate, options: .cumulativeSum) { [weak self] _, result, error in
+        guard let self = self, error == nil, let sum = result?.sumQuantity() else {
+            return
+        }
+        
+        // Преобразование в килокалории
+        let calories = sum.doubleValue(for: HKUnit.kilocalorie())
+        Task { @MainActor in
+            self.caloriesBurned = calories
+        }
+    }
+    
+    healthStore.execute(query)
+}
+```
+
+**Рисунок 4.18 – Листинг программы метода получения сожженных калорий за день**
+
+### Метод fetchTodayDistance() – Получение пройденного расстояния
+
+Последний метод чтения для этого класса — fetchTodayDistance() (рисунок 4.19), который используется для получения пройденного расстояния за текущий день. Этот метод использует тип данных distanceWalkingRunning и преобразует результат в километры с помощью HKUnit.meterUnit(with: .kilo).
+
+```swift
+func fetchTodayDistance() async {
+    // Получение типа данных для расстояния
+    guard let distanceType = HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning) else { return }
+    
+    let now = Date()
+    let startOfDay = Calendar.current.startOfDay(for: now)
+    let predicate = HKQuery.predicateForSamples(withStart: startOfDay, end: now, options: .strictStartDate)
+    
+    let query = HKStatisticsQuery(quantityType: distanceType, quantitySamplePredicate: predicate, options: .cumulativeSum) { [weak self] _, result, error in
+        guard let self = self, error == nil, let sum = result?.sumQuantity() else {
+            return
+        }
+        
+        // Преобразование в километры
+        let distance = sum.doubleValue(for: HKUnit.meterUnit(with: .kilo))
+        Task { @MainActor in
+            self.distanceWalked = distance
+        }
+    }
+    
+    healthStore.execute(query)
+}
+```
+
+**Рисунок 4.19 – Листинг программы метода получения пройденного расстояния за день**
+
 ## Сводная таблица CRUD операций в SwiftData
 
 | Операция | Метод SwiftData | Описание | Пример в приложении |
