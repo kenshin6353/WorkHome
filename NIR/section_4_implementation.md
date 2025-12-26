@@ -318,67 +318,213 @@ private func checkAchievements(for user: User, modelContext: ModelContext) {
 
 **Рисунок 4.8 – Листинг программы метода для проверки достижений**
 
-## 4.4. Environment Object и ObservableObject
+### Метод fetchWorkoutHistory() – Получение истории тренировок
 
-Для ускорения работы этого приложения необходимо минимизировать количество обращений к базе данных (получение данных о пользователе). Поэтому было решено создать класс, который сохраняет все данные, в общем, всякий раз, когда пользователь запускает приложение, приложение загружает данные пользователя, чтобы заполнить все представления актуальной информацией. Поскольку данные пользователя не сильно меняются в течение некоторого периода времени и будет меняться только тогда, когда пользователь завершает тренировку, добавляет прием пищи или обновляет измерения, логично сохранить и кэшировать эти данные.
+В этом классе SwiftDataManager существуют несколько методов для получения определенных данных для этого приложения. Один из методов используется для получения истории тренировок пользователя — fetchWorkoutHistory() (рисунок 4.9). Этот метод возвращает массив записей тренировок, отсортированных по дате в порядке убывания, чтобы самые последние тренировки отображались первыми. Для сортировки данных используется параметр sortBy в FetchDescriptor, который принимает массив SortDescriptor с указанием ключа сортировки и порядка (ascending: false для убывания).
 
-Если пользователь добавит новую тренировку в историю, система обновит данные в SwiftDataManager, и, если данные будут успешно сохранены в базе данных SwiftData, все связанные представления автоматически обновятся благодаря механизму @Published. И наоборот, когда пользователь удаляет запись, система пытается удалить её из базы данных, затем удаляет из локального кэша в SwiftDataManager.
-
-Хотя можно сделать этот класс объектом Singleton, который реализует наблюдаемый протокол интерфейса объекта, но, поскольку паттерн одиночка не является действительно хорошим паттерном проектирования, весьма вероятно, что могут возникать ошибки, поскольку этот класс объектов инициируется глобально, поэтому любой метод или класс в кодовой базе этого приложения имеет доступ к этому классу и могут вносить изменения в этот одноэлементный класс. Хотя в этом приложении оба этих класса будут использоваться только в некоторых методах модели представления и в некоторых представлениях, необходимо найти другое решение, которое можно применить, чтобы избежать использования паттерна одиночка.
-
-В Swift есть обёртка свойств @EnvironmentObject, которую можно применить к классу, реализующему протокол ObservableObject [64], который помогает обмениваться данными между представлениями [67]. Эта обёртка свойств может гарантировать, что только те части представлений, которые должны получить доступ к этому классу, предоставляя эти дочерние представления из родительских представлений с модификатором .environmentObject() [68]. В этом случае было решено, что использование быстрой оболочки свойств @EnvironmentObject и передача этого объекта с помощью модификатора .environmentObject() помогает поддерживать то, что из этих классов создается только один экземпляр, а те представления или методы моделей представления, которым они нужны, имеют доступ к этому.
-
-На рисунке 4.9 приведена диаграмма классов класса SwiftDataManager, который реализует протокол ObservableObject и используется для управления данными пользователя и операциями с базой данных.
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                    SwiftDataManager                              │
-├─────────────────────────────────────────────────────────────────┤
-│ + shared: SwiftDataManager               «static»                │
-│ + currentUser: User?                     «@Published»            │
-│ + isLoggedIn: Bool                       «@Published»            │
-├─────────────────────────────────────────────────────────────────┤
-│ - init()                                 «private»               │
-│ + login(email:password:modelContext:) -> Bool                    │
-│ + register(firstName:...modelContext:) -> Bool                   │
-│ + logout()                                                       │
-│ + recordWorkoutCompletion(...modelContext:)                      │
-└─────────────────────────────────────────────────────────────────┘
+```swift
+func fetchWorkoutHistory(for user: User, modelContext: ModelContext) -> [WorkoutRecord] {
+    // Создание дескриптора запроса с сортировкой по дате
+    let descriptor = FetchDescriptor<WorkoutRecord>(
+        predicate: #Predicate { record in
+            record.user?.id == user.id
+        },
+        sortBy: [SortDescriptor(\.date, order: .reverse)]
+    )
+    
+    do {
+        // Выполнение запроса к базе данных SwiftData
+        let records = try modelContext.fetch(descriptor)
+        return records
+    } catch {
+        print("Error fetching workout history: \(error)")
+        return []
+    }
+}
 ```
 
-**Рисунок 4.9 – Диаграмма классов класса SwiftDataManager, реализующего ObservableObject**
+**Рисунок 4.9 – Листинг программы метода получения истории тренировок пользователя**
 
-Оба класса SwiftDataManager и HealthKitManager создаются в точке входа приложения и передаются в иерархию представлений с помощью .environmentObject() (рисунок 4.10). Декоратор @StateObject используется для создания объектов, которые должны сохраняться на протяжении всего жизненного цикла приложения. Модификатор .environmentObject() передает эти объекты во все дочерние представления через механизм окружения SwiftUI. Модификатор .modelContainer() настраивает контейнер SwiftData со списком всех моделей, которые будут персистироваться.
+### Метод fetchMealsByDate() – Получение приемов пищи за день
+
+Еще один метод для выборки данных — fetchMealsByDate() (рисунок 4.10). Этот метод принимает один параметр типа Date и возвращает массив приемов пищи за указанный день. Во-первых, необходимо создать правильный временной интервал от начала дня до конца этого дня. Swift предоставляет 2 объекта для работы с датой: Calendar и Date. После создания 2 временных ограничений следующим шагом будет создание NSPredicate с логикой: mealDate >= startOfDay && mealDate < endOfDay. Запрошенные данные затем сортируются по времени приема пищи в порядке возрастания.
+
+```swift
+func fetchMealsByDate(_ date: Date, for user: User, modelContext: ModelContext) -> [Meal] {
+    // Вычисление начала и конца дня
+    let calendar = Calendar.current
+    let startOfDay = calendar.startOfDay(for: date)
+    let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
+    
+    // Создание дескриптора с предикатом для фильтрации по дате
+    let descriptor = FetchDescriptor<Meal>(
+        predicate: #Predicate { meal in
+            meal.user?.id == user.id &&
+            meal.date >= startOfDay &&
+            meal.date < endOfDay
+        },
+        sortBy: [SortDescriptor(\.date, order: .forward)]
+    )
+    
+    do {
+        let meals = try modelContext.fetch(descriptor)
+        return meals
+    } catch {
+        print("Error fetching meals: \(error)")
+        return []
+    }
+}
+```
+
+**Рисунок 4.10 – Листинг программы метода получения приемов пищи за определенный день**
+
+### Метод fetchWeightProgress() – Получение истории измерений веса
+
+Последний метод чтения для этого класса — fetchWeightProgress() (рисунок 4.11), который используется для получения всего журнала измерений веса пользователя. Этот метод возвращает массив записей WeightRecord, отсортированных по дате в порядке возрастания для построения графика прогресса. Данные используются в разделе Progress для визуализации изменения веса пользователя с течением времени.
+
+```swift
+func fetchWeightProgress(for user: User, modelContext: ModelContext) -> [WeightRecord] {
+    // Создание дескриптора с сортировкой по дате (от старых к новым)
+    let descriptor = FetchDescriptor<WeightRecord>(
+        predicate: #Predicate { record in
+            record.user?.id == user.id
+        },
+        sortBy: [SortDescriptor(\.date, order: .forward)]
+    )
+    
+    do {
+        let records = try modelContext.fetch(descriptor)
+        return records
+    } catch {
+        print("Error fetching weight progress: \(error)")
+        return []
+    }
+}
+```
+
+**Рисунок 4.11 – Листинг программы метода получения истории измерений веса**
+
+## 4.4. Обёртки свойств @StateObject, @ObservedObject и @Environment
+
+В SwiftUI существует несколько обёрток свойств (property wrappers) для управления состоянием и передачи данных между представлениями. В данном приложении используются три основные обёртки: @StateObject, @ObservedObject и @Environment. Каждая из них имеет своё назначение и область применения.
+
+### @StateObject – Создание и владение объектом
+
+Обёртка @StateObject [64] используется для создания экземпляра класса, реализующего протокол ObservableObject, и гарантирует, что объект создается только один раз за время жизни представления. В данном приложении @StateObject используется в точке входа приложения (WORKOUTApp) для создания экземпляра SwiftDataManager (рисунок 4.12). Это важно, потому что @StateObject гарантирует, что объект не будет пересоздаваться при перерисовке представления, что могло бы привести к потере данных.
 
 ```swift
 @main
 struct WORKOUTApp: App {
-    // Создание экземпляров сервисов как @StateObject
-    // @StateObject гарантирует, что объект создается один раз
-    @StateObject private var swiftDataManager = SwiftDataManager.shared
-    @StateObject private var healthKitManager = HealthKitManager.shared
+    // @StateObject создает и владеет объектом SwiftDataManager
+    // Объект создается один раз при запуске приложения
+    @StateObject private var authManager = AuthManager.shared
+    
+    // Создание контейнера SwiftData для моделей данных
+    var sharedModelContainer: ModelContainer = {
+        let schema = Schema([
+            User.self,
+            WorkoutRecord.self,
+            Meal.self,
+            FoodItem.self,
+            WeightRecord.self,
+            UserAchievement.self,
+        ])
+        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+        
+        do {
+            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+        } catch {
+            fatalError("Could not create ModelContainer: \(error)")
+        }
+    }()
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                // Передача объектов в иерархию представлений
-                .environmentObject(swiftDataManager)
-                .environmentObject(healthKitManager)
-                // Настройка контейнера SwiftData для моделей данных
-                .modelContainer(for: [
-                    User.self,
-                    Meal.self,
-                    FoodItem.self,
-                    WorkoutRecord.self,
-                    WeightRecord.self,
-                    UserAchievement.self
-                ])
+            // Передача authManager как параметра в ContentView
+            ContentView(authManager: authManager)
+        }
+        .modelContainer(sharedModelContainer)
+    }
+}
+```
+
+**Рисунок 4.12 – Листинг программы точки входа приложения с использованием @StateObject**
+
+### @ObservedObject – Наблюдение за объектом
+
+Обёртка @ObservedObject [65] используется для наблюдения за объектом, который был создан и передан из другого представления. В отличие от @StateObject, @ObservedObject не владеет объектом, а только наблюдает за его изменениями. Когда свойство с декоратором @Published изменяется, все представления, использующие @ObservedObject, автоматически обновляются (рисунок 4.13).
+
+```swift
+struct HomeView: View {
+    // @ObservedObject наблюдает за изменениями в authManager
+    // authManager был создан в WORKOUTApp и передан через параметры
+    @ObservedObject var authManager: AuthManager
+    
+    // @ObservedObject для наблюдения за данными HealthKit
+    @ObservedObject var healthKitManager = HealthKitManager.shared
+    
+    // @Environment для доступа к контексту SwiftData
+    @Environment(\.modelContext) private var modelContext
+    
+    var body: some View {
+        VStack {
+            // UI автоматически обновляется при изменении currentUser
+            if let user = authManager.currentUser {
+                Text("Welcome, \(user.firstName)!")
+                Text("Total workouts: \(user.totalWorkouts)")
+                Text("Current streak: \(user.currentStreak) days")
+            }
+            
+            // UI автоматически обновляется при изменении stepCount
+            Text("\(healthKitManager.stepCount) steps today")
         }
     }
 }
 ```
 
-**Рисунок 4.10 – Листинг программы структуры, реализующая протокол App (точка входа приложения), где создаются сервисы для управления данными**
+**Рисунок 4.13 – Листинг программы использования @ObservedObject в представлении**
+
+### @Environment – Доступ к системным значениям
+
+Обёртка @Environment [66] используется для доступа к значениям, предоставляемым системой SwiftUI или контейнером данных. В данном приложении @Environment используется для получения ModelContext из SwiftData, который необходим для выполнения операций с базой данных (рисунок 4.14). ModelContext автоматически предоставляется модификатором .modelContainer() в точке входа приложения.
+
+```swift
+struct ProfileView: View {
+    @ObservedObject var authManager: AuthManager
+    
+    // @Environment получает ModelContext из окружения SwiftUI
+    // ModelContext был предоставлен модификатором .modelContainer()
+    @Environment(\.modelContext) private var modelContext
+    
+    var body: some View {
+        VStack {
+            if let user = authManager.currentUser {
+                // Отображение данных пользователя
+                Text("\(user.firstName) \(user.lastName)")
+                
+                Button("Save Changes") {
+                    // Использование modelContext для сохранения изменений
+                    do {
+                        try modelContext.save()
+                    } catch {
+                        print("Error saving: \(error)")
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+**Рисунок 4.14 – Листинг программы использования @Environment для доступа к ModelContext**
+
+### Сравнение обёрток свойств
+
+| Обёртка | Назначение | Использование в приложении |
+|---------|------------|---------------------------|
+| **@StateObject** | Создание и владение объектом | WORKOUTApp создает AuthManager |
+| **@ObservedObject** | Наблюдение за переданным объектом | HomeView, ProfileView наблюдают за AuthManager |
+| **@Environment** | Доступ к системным значениям | Получение ModelContext для SwiftData |
 
 ## Сводная таблица CRUD операций в SwiftData
 
